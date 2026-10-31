@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UnbreakingSMP - Official Minecraft Server</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --bg-card: #121620;
+      --bg-card-hover: #1a202c;
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.35);
+      --accent-discord: #5865F2;
+      --accent-discord-hover: #4752C4;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-heading: 'Rajdhani', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(12px);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #059669, #10b981);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 0 15px var(--accent-emerald-glow);
+    }
+
+    .brand-title {
+      font-family: var(--font-pixel);
+      font-size: 0.9rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-emerald {
+      background: var(--accent-emerald);
+      color: #000;
+      box-shadow: 0 0 20px var(--accent-emerald-glow);
+    }
+
+    .btn-emerald:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+    }
+
+    .btn-discord {
+      background: var(--accent-discord);
+      color: #fff;
+    }
+
+    .btn-discord:hover {
+      background: var(--accent-discord-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 10rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.12) 0%, rgba(10, 12, 16, 0) 70%);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--accent-emerald);
+      margin-bottom: 1.5rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-emerald);
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      background: linear-gradient(to bottom, #ffffff, #9ca3af);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      max-width: 650px;
+      margin: 0 auto 2.5rem;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+    }
+
+    .ip-box {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .ip-text {
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Cards Grid */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      color: var(--accent-emerald);
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* How to Join Steps */
+    .join-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .join-container {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+    }
+
+    .step-list {
+      list-style: none;
+      counter-reset: step;
+    }
+
+    .step-item {
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .step-item::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--accent-emerald);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-emerald);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-emerald);
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <div class="brand-logo"><i class="fa-solid fa-cube"></i></div>
+      <span class="brand-title">UNBREAKING SMP</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how-to-join" class="nav-link">How to Join</a>
+      <!-- Updated Discord Link -->
+      <a href="https://discord.gg/yvp2ArqQR" target="_blank" class="btn btn-discord">
+        <i class="fa-brands fa-discord"></i> Join Discord
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="status-badge">
+      <span class="status-dot"></span> Java & Bedrock Crossplay
+    </div>
+    <h1 class="hero-title">UnbreakingSMP</h1>
+    <p class="hero-subtitle">Experience survival Minecraft at its finest. Friendly community, land protection, balanced economy, and cross-platform support.</p>
+
+    <!-- Updated Server Address -->
+    <div class="ip-box">
+      <span class="ip-text" id="serverIp">nih-adjustable.tun.ply.gg</span>
+      <button class="btn btn-emerald" onclick="copyIp()">
+        <i class="fa-regular fa-copy"></i> Copy IP
+      </button>
+    </div>
+
+    <div class="hero-actions">
+      <!-- Updated Discord Link -->
+      <a href="https://discord.gg/yvp2ArqQR" target="_blank" class="btn btn-discord">
+        <i class="fa-brands fa-discord"></i> Join Discord Server
+      </a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="section">
+    <h2 class="section-title">Server Features</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="card-title">Land Claiming</h3>
+        <p class="card-desc">Protect your builds effortlessly. Set permissions for friends and build without fear of griefing.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-coins"></i></div>
+        <h3 class="card-title">Player Economy</h3>
+        <p class="card-desc">Trade items with other players, set up shops, and participate in a player-driven auction house.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3 class="card-title">Cross-Play Ready</h3>
+        <p class="card-desc">Play seamlessly from PC, Mobile, Xbox, PlayStation, or Nintendo Switch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Join Section -->
+  <section id="how-to-join" class="section">
+    <h2 class="section-title">How to Join</h2>
+    <div class="join-container">
+      
+      <!-- Java Edition -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-desktop"></i> Java Edition</h3>
+        <ol class="step-list">
+          <li class="step-item">Open Minecraft and click <strong>Multiplayer</strong>.</li>
+          <li class="step-item">Click <strong>Add Server</strong>.</li>
+          <li class="step-item">Set Server Name to <strong>UnbreakingSMP</strong>.</li>
+          <li class="step-item">Enter Server Address: <code style="color:var(--accent-emerald);">nih-adjustable.tun.ply.gg</code></li>
+          <li class="step-item">Click <strong>Done</strong> and join!</li>
+        </ol>
+      </div>
+
+      <!-- Bedrock Edition -->
+      <div class="card">
+        <h3 class="card-title" style="margin-bottom: 1.5rem;"><i class="fa-solid fa-gamepad"></i> Bedrock (Mobile/Console)</h3>
+        <ol class="step-list">
+          <li class="step-item">Open Minecraft Bedrock Edition and go to <strong>Play > Servers</strong>.</li>
+          <li class="step-item">Scroll down and tap <strong>Add Server</strong>.</li>
+          <li class="step-item">Enter Server Name: <strong>UnbreakingSMP</strong>.</li>
+          <li class="step-item">Server Address: <code style="color:var(--accent-emerald);">nih-adjustable.tun.ply.gg</code></li>
+          <li class="step-item">Port: <code style="color:var(--accent-emerald);">19132</code></li>
+        </ol>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 UnbreakingSMP. All rights reserved. Not affiliated with Mojang Studios.</p>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Server IP copied to clipboard!</div>
+
+  <script>
+    function copyIp() {
+      const ipText = document.getElementById('serverIp').innerText;
+      navigator.clipboard.writeText(ipText).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, 3000);
+      });
+    }
+  </script>
+</body>
+</html>
